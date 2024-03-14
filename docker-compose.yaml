@@ -1,0 +1,29 @@
+version: "3"
+services:
+  maria:
+    image: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_USER: root
+      MARIADB_ROOT_PASSWORD: password
+      MARIADB_USER: ecomuser
+      MARIADB_PASSWORD: ecompassword
+      MARIADB_DATABASE: ecomdb
+
+  webserver:
+    image: preciousdipe/ecom-web:v1
+    depends_on:
+      - maria
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www/html/
+
+    environment:
+      DB_HOST: maria
+      DB_ROOT_USER: root
+      DB_ROOT_PASSWORD: password
+      DB_USER: ecomuser
+      DB_PASSWORD: ecompassword
+      DB_NAME: ecomdb
